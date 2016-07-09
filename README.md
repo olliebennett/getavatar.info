@@ -2,6 +2,8 @@
 
 Show full profile details (if available) based on any [Gravatar](http://en.gravatar.com/) image on any site.
 
+See it in action at [GetAvatar.info](http://www.getavatar.info/)!
+
 ## Idea
 
 When a webpage contains a Gravatar user image, it's possible to extract the hash from this image URI and use it to request the associated profile information.
