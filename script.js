@@ -7,7 +7,8 @@ var handleGravatarResponse = function(profile) {
 };
 
 var guessEmailAddress = function(hash, username, firstname, lastname) {
-  var possibleMailboxes = [username];
+  var possibleMailboxes = [];
+  if (username) { possibleMailboxes.push(username); }
   if (firstname) { possibleMailboxes.push(firstname); }
   if (lastname) { possibleMailboxes.push(lastname); }
 
@@ -26,21 +27,28 @@ var guessEmailAddress = function(hash, username, firstname, lastname) {
 
   // De-duplicate...
   possibleMailboxes = possibleMailboxes.filter(function(item, pos, self) { return self.indexOf(item) == pos; });
-  checkEmailAddresses(hash, possibleMailboxes, primaryDomains);
+
+  return checkEmailAddresses(hash, possibleMailboxes, primaryDomains);
 };
 
 var checkEmailAddresses = function(hash, mailboxes, domains) {
   // Try every combination of mailbox@domain
-  mailboxes.forEach(function(mailbox) {
-    domains.forEach(function(domain) {
+  var mailboxes_count = mailboxes.length;
+  var domains_count = domains.length;
+  for (var i = 0; i < mailboxes_count; i++) {
+    var mailbox = mailboxes[i];
+    for (var j = 0; j < domains_count; j++) {
+      var domain = domains[j];
       var test_email = mailbox + '@' + domain;
       var test_hash = MD5(test_email);
-      console.log("Testing email: " + test_email);
+      // console.log("Testing email: " + test_email);
       if (test_hash == hash) {
-        alert("Found email: " + test_email);
+        // alert("Found email: " + test_email);
+        return test_email;
       }
-    });
-  });
+    };
+  };
+  return null; // no match :(
 }
 
 var getBasicInfo = function(hash) {
@@ -53,9 +61,11 @@ window.addEventListener("load", function load(event){
   window.removeEventListener("load", load, false); //remove listener, no longer needed
 
   var form = document.getElementById('form');
-  form.addEventListener("submit", function(e) {
-    e.preventDefault();
-    var hash = document.getElementById('hash').value;
-    getBasicInfo(hash);
-  });
+  if (form) {
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      var hash = document.getElementById('hash').value;
+      getBasicInfo(hash);
+    });
+  }
 }, false);

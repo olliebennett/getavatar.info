@@ -22,8 +22,32 @@
     <li>Raw Data: <code id="userData"></code></li>
   </ul>
 
+  <h1>Email Guesser Test Page</h1>
+
+  <p>View details on <a href="https://github.com/olliebennett/gravatar-decoder">GitHub</a></p>
+
+  <h2>Enter test data.</h2>
+
+  <p>Separate each test user on their own line, using the format email,firstname,lastname.</p>
+
+  <form id="testform">
+    <textarea id="testdata"
+              placeholder="olliebennett@gmail.com,Ollie,Bennett"
+              cols="75"
+              rows="10"></textarea>
+    <br>
+    <button type="submit">Check success stats</button>
+  </form>
+
+  <h2>Test Results</h2>
+
+  <table id="results">
+  </table>
+
   <script src="domains.js"></script>
   <script src="md5.js"></script>
+
+  <script src="test.js"></script>
 
   <script src="script.js"></script>
 </body>
