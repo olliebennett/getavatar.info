@@ -1,0 +1,17 @@
+var nameAliases = [
+  ['alexander', 'alex', 'al'],
+  ['alistair', 'ali', 'al'],
+  ['allan', 'alan', 'al'],
+  ['anthony', 'antony', 'ant'],
+  ['benjamin', 'ben'],
+  ['bradley', 'brad'],
+  ['christopher', 'chris'],
+  ['daniel', 'dan'],
+  ['emma', 'ems', 'em'],
+  ['joseph', 'joe', 'jo'],
+  ['joshua', 'josh'],
+  ['oliver', 'ollie', 'oli', 'olly'],
+  ['robert', 'rob'],
+  ['stephanie', 'steph', 'stef'],
+  ['william', 'will'],
+];
