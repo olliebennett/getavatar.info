@@ -1,75 +1,108 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+
   <title>Gravatar Decoder</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
+
 <body>
-  <h1>Gravatar Decoder</h1>
+  <div class="container">
+    <header>
+      <h1>Gravatar Decoder</h1>
+    </header>
 
-  <p>View details on <a href="https://github.com/olliebennett/gravatar-decoder">GitHub</a></p>
+    <p>Attempt to guess an email address given the user's first and last name (and the MD5 of the email).</p>
+    <p>A Gravatar image URL can also be used as an input.</p>
 
-  <h2>Enter Gravatar Hash (from Image URL)</h2>
+    <form id="form">
 
-  <form id="form">
-    <input id="hash" type="text">
+      <div class="form-group">
+        <label for="hash">Hash</label>
+        <p class="help-block">Paste the MD5 hash part of the Gravatar image here.</p>
+        <input id="hash" type="text" class="form-control">
+      </div>
 
-    <!--
-    <p>Configuration</p>
+      <!--
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" id="domains_basic" value="domains_basic" checked disabled>
+          Basic Checks at Popular Domains
+        </label>
+      </div>
 
-    <label>
-      <input type="checkbox" id="domains_basic" value="domains_basic" checked disabled>
-      Basic Checks at Popular Domains
-    </label>
-    <br>
-    <label>
-      <input type="checkbox" id="domains_advanced" value="domains_advanced" checked>
-      Name Aliases
-    </label>
-    <br>
-    <label>
-      <input type="checkbox" id="domains_advanced" value="domains_advanced" checked>
-      Middle Name Initial
-    </label>
-    <br>
-    <label>
-      <input type="checkbox" id="domains_advanced" value="domains_advanced" checked>
-      Extended Domain List
-    </label>
-    -->
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" id="domains_advanced" value="domains_advanced" checked>
+          Name Aliases
+        </label>
+      </div>
 
-    <br>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" id="domains_advanced" value="domains_advanced" checked>
+          Middle Name Initial
+        </label>
+      </div>
 
-    <button type="submit">Fetch!</button>
-  </form>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" id="domains_advanced" value="domains_advanced" checked>
+          Extended Domain List
+        </label>
+      </div>
+      -->
 
-  <h2>User Data</h2>
+      <button type="submit" class="btn btn-default">Fetch &amp; Guess!</button>
 
-  <ul>
-    <li>Name: <code id="displayName"></code></li>
-    <li>Preferred Username: <code id="preferredUsername"></code></li>
-    <li>Raw Data: <code id="userData"></code></li>
-  </ul>
+    </form>
 
-  <h1>Email Guesser Test Page</h1>
+    <h3>User Data from Gravatar</h3>
 
-  <p>View details on <a href="https://github.com/olliebennett/gravatar-decoder">GitHub</a></p>
+    <ul>
+      <li>Name: <code id="displayName"></code></li>
+      <li>Preferred Username: <code id="preferredUsername"></code></li>
+      <li>Raw Data: <code id="userData"></code></li>
+    </ul>
 
-  <h2>Enter test data.</h2>
+    <h1>Email Guesser Testing</h1>
 
-  <p>Separate each test user on their own line, using the format email,firstname,lastname.</p>
+    <p>Use this to test a list of name+email data to check the effectiveness of the email-guessing algorithm.</p>
 
-  <form id="testform">
-    <textarea id="testdata"
-              placeholder="olliebennett@gmail.com,Ollie,Bennett"
-              cols="75"
-              rows="10"></textarea>
-    <br>
-    <button type="submit">Check success stats</button>
-  </form>
+    <form id="testform">
 
-  <h2>Test Results</h2>
+      <div class="form-group">
+        <label for="testdata">Test Data</label>
+        <p class="help-block">Separate each test user on their own line, using the format email,firstname,lastname.</p>
+        <textarea class="form-control"
+                  id="testdata"
+                  placeholder="olliebennett@gmail.com,Ollie,Bennett"
+                  rows="10"></textarea>
+      </div>
 
-  <table id="results">
-  </table>
+      <button type="submit" class="btn btn-default">Check success stats</button>
+    </form>
+
+    <h2>Test Results</h2>
+
+    <table id="results">
+    </table>
+
+
+    <div class="alert alert-info">
+      <p>
+        <span>Created by <a href="http://olliebennett.co.uk/">Ollie Bennett</a>.</span>
+        <span class="pull-right">Raise issues or contribute via <a href="https://github.com/olliebennett/gravatar-decoder">GitHub</a> &rarr;</span>
+      </p>
+    </div>
+
+  </div><!-- .container -->
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
   <script src="domains.js"></script>
   <script src="name_aliases.js"></script>
