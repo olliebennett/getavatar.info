@@ -1,5 +1,9 @@
 var handleGravatarResponse = function(profile) {
   var user = profile.entry[0];
+  if (!user || !user.name) {
+    alert('User info not found on Gravatar.');
+    return;
+  }
   document.getElementById('displayName').innerHTML = user.displayName;
   document.getElementById('preferredUsername').innerHTML = user.preferredUsername;
   document.getElementById('userData').innerHTML = JSON.stringify(user);
@@ -31,27 +35,61 @@ var guessEmailAddress = function(hash, username, firstname, lastname) {
   return checkEmailAddresses(hash, possibleMailboxes, primaryDomains);
 };
 
+var range = function(min, max) {
+  var x = [];
+  for (var i=min;i<=max;i++) {
+    x.push(i);
+  }
+  return x;
+}
+
+var toggleLoading = function(bool, delay) {
+  var spinner = document.getElementById('loading-spinner');
+  // Optionally delay stopping loader to ensure it's noticed.
+  setTimeout(function() {
+    spinner.style.display = (bool ? 'block' : 'none');
+  }, delay ? 1000 : 0);
+}
+
 var checkEmailAddresses = function(hash, mailboxes, domains) {
+  toggleLoading(true, false);
   // Try every combination of mailbox@domain
   var mailboxes_count = mailboxes.length;
   var domains_count = domains.length;
-  for (var i = 0; i < mailboxes_count; i++) {
-    var mailbox = mailboxes[i];
-    for (var j = 0; j < domains_count; j++) {
-      var domain = domains[j];
+  for (var m = 0; m < mailboxes_count; m++) {
+    var mailbox = mailboxes[m];
+    for (var d = 0; d < domains_count; d++) {
+      var domain = domains[d];
       var test_email = mailbox + '@' + domain;
       var test_hash = MD5(test_email);
-      // console.log("Testing email: " + test_email);
+      if ((m * d) % 1000 === 0) {
+        console.log("Testing email: " + test_email);
+      }
       if (test_hash == hash) {
-        // alert("Found email: " + test_email);
+        foundMatch(test_email);
         return test_email;
       }
     };
   };
+
   return null; // no match :(
 }
 
+var foundMatch = function(email) {
+  toggleLoading(false, true);
+  var no_match = document.getElementById('no-match');
+  var match = document.getElementById('match');
+  var match_email = document.getElementById('match-email');
+  match_email.innerHTML = email;
+  no_match.style.display = 'none';
+  match.style.display = 'block';
+}
+
 var getBasicInfo = function(hash) {
+  if (!hash || hash === '') {
+    alert('Please enter a hash first!');
+    return;
+  }
   var script = document.createElement('script');
   script.src = 'https://www.gravatar.com/' + hash + '.json?callback=handleGravatarResponse'
   document.head.appendChild(script);
@@ -68,4 +106,15 @@ window.addEventListener("load", function load(event){
       getBasicInfo(hash);
     });
   }
+
+  var load_sample = document.getElementById('sample-md5');
+  if (load_sample) {
+    var sample_md5 = 'a49dac25dce3eea611ce4475cc5e8744';
+    load_sample.addEventListener('click', function(e) {
+      e.preventDefault();
+      document.getElementById('hash').value = sample_md5;
+    });
+  }
+
+  toggleLoading(false, false);
 }, false);
