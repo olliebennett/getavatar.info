@@ -11,23 +11,39 @@ var handleGravatarResponse = function(profile) {
 };
 
 var guessEmailAddress = function(hash, username, firstname, lastname) {
-  var possibleMailboxes = [];
-  if (username) { possibleMailboxes.push(username); }
-  if (firstname) { possibleMailboxes.push(firstname); }
-  if (lastname) { possibleMailboxes.push(lastname); }
+  var basicMailboxes = [];
+  if (username) {
+    username = username.toLowerCase();
+    basicMailboxes.push(username);
+  }
+  if (firstname) {
+    firstname = firstname.toLowerCase();
+    basicMailboxes.push(firstname);
+  }
+  if (lastname) {
+    lastname = lastname.toLowerCase();
+    basicMailboxes.push(lastname);
+  }
+
+  // Assume people use their birthdays!
+  var numberList = [''].concat(range(1980, 2005));
 
   var seps = ['', '.', '-', '_'];
   if (firstname && lastname) {
-    seps.forEach(function(sep) {
-      possibleMailboxes.push(firstname + sep + lastname);
-      possibleMailboxes.push(lastname + sep + firstname);
-      possibleMailboxes.push(firstname.substring(0, 1) + sep + lastname);
-      possibleMailboxes.push(firstname + sep + lastname.substring(0, 1));
+    seps.forEach(function(sep1) {
+      basicMailboxes.push(firstname + sep1 + lastname)
+      basicMailboxes.push(lastname + sep1 + firstname)
+      basicMailboxes.push(firstname.substring(0, 1) + sep1 + lastname)
+      basicMailboxes.push(firstname + sep1 + lastname.substring(0, 1))
     });
   }
 
-  // Convert to lowercase
-  possibleMailboxes = possibleMailboxes.map(function(mb) { return mb.toLowerCase(); });
+  var possibleMailboxes = [];
+  numberList.forEach(function(num) {
+    basicMailboxes.forEach(function(basicMailbox) {
+      possibleMailboxes.push(basicMailbox + num);
+    });
+  });
 
   // De-duplicate...
   possibleMailboxes = possibleMailboxes.filter(function(item, pos, self) { return self.indexOf(item) == pos; });
