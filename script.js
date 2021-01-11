@@ -53,7 +53,7 @@ if (!window.Worker) {
 const myWorker = new Worker("worker.js");
 
 myWorker.onmessage = function(e) {
-  console.log('Message ' + e.data[0] + ' received from worker...');
+  // console.log('Message ' + e.data[0] + ' received from worker...');
   if (e.data[0] == 'TOGGLE_LOADING') {
     var bool_result = e.data[1];
     var delay = e.data[2];
@@ -99,7 +99,7 @@ var guessEmailAddress = function(hash, username, firstname, lastname) {
   checksTableReset();
 
   myWorker.postMessage([hash, mailboxes, primaryDomains]);
-  console.log('Worker instructed to process...');
+  // console.log('Worker instructed to process...');
 };
 
 var nameCombinations = function(firstname, lastname) {
