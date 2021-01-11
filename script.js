@@ -30,6 +30,32 @@ var handleGravatarResponse = function(profile) {
   guessEmailAddress(user.hash, user.preferredUsername, firstname, lastname);
 };
 
+if (!window.Worker) {
+  alert('Your browser doesn\'t support web workers.')
+}
+
+const myWorker = new Worker("worker.js");
+
+myWorker.onmessage = function(e) {
+  console.log('Message ' + e.data[0] + ' received from worker...');
+  if (e.data[0] == 'TOGGLE_LOADING') {
+    var bool_result = e.data[1];
+    var delay = e.data[2];
+    toggleLoading(bool_result, delay);
+  } else if (e.data[0] == 'DOMAIN_BEGIN_PROCESSING') {
+    var domain = e.data[1];
+    checksTableNewDomainRow(domain);
+  } else if (e.data[0] == 'DOMAIN_CHECK_RESULT') {
+    var domain = e.data[1];
+    var check_slug = e.data[2];
+    var success_bool = e.data[3];
+    checksTableUpdateResult(domain, check_slug, success_bool);
+  } else if (e.data[0] == 'MATCH_FOUND') {
+    var test_email = e.data[1];
+    foundMatch(test_email);
+  }
+}
+
 var guessEmailAddress = function(hash, username, firstname, lastname) {
   var mailboxes = [];
   if (username) {
@@ -52,7 +78,12 @@ var guessEmailAddress = function(hash, username, firstname, lastname) {
   // De-duplicate...
   mailboxes = uniq(mailboxes);
 
-  return checkEmailAddresses(hash, mailboxes, primaryDomains);
+  // checkEmailAddresses(hash, mailboxes, primaryDomains);
+
+  checksTableReset();
+
+  myWorker.postMessage([hash, mailboxes, primaryDomains]);
+  console.log('Worker instructed to process...');
 };
 
 var nameCombinations = function(firstname, lastname) {
@@ -110,39 +141,6 @@ var toggleLoading = function(bool, delay) {
   setTimeout(function() {
     spinner.style.display = (bool ? 'block' : 'none');
   }, delay ? 1000 : 0);
-}
-
-var checkEmailAddresses = function(hash, mailboxes, domains) {
-  toggleLoading(true, false);
-  checksTableReset();
-  // Try every combination of mailbox@domain
-  var mailboxes_count = mailboxes.length;
-  var domains_count = domains.length;
-  for (var d = 0; d < domains_count; d++) {
-    var domain = domains[d];
-    checksTableNewDomainRow(domain);
-    for (var m = 0; m < mailboxes_count; m++) {
-      var mailbox = mailboxes[m];
-      var test_email = mailbox + '@' + domain;
-      var test_hash = MD5(test_email);
-      if ((m * d) % 1000 === 0) {
-        console.log("Testing email: " + test_email);
-      }
-      if (test_hash == hash) {
-        foundMatch(test_email);
-        toggleLoading(false, false);
-        checksTableUpdateResult(domain, 'check1', true);
-        checksTableUpdateResult(domain, 'check2', true);
-        return test_email;
-      }
-    };
-    checksTableUpdateResult(domain, 'check1', false);
-    checksTableUpdateResult(domain, 'check2', false);
-  };
-
-  toggleLoading(false, true);
-
-  return null; // no match :(
 }
 
 var foundMatch = function(email) {
