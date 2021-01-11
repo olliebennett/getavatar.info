@@ -102,15 +102,26 @@ var guessEmailAddress = function(hash, username, firstname, lastname) {
   // console.log('Worker instructed to process...');
 };
 
+const alphabet = "abcdefghijklmnopqrstuvwxyz".split('')
+const separators = ['', '.', '-', '_'];
+
 var nameCombinations = function(firstname, lastname) {
   if (!firstname || !lastname) { return []; };
 
+  var firstInitial = firstname.substring(0, 1);
+  var lastInitial = lastname.substring(0, 1);
+
   var result = [];
-  ['', '.', '-', '_'].forEach(function(sep) {
-    result.push(firstname + sep + lastname)
-    result.push(lastname + sep + firstname)
-    result.push(firstname.substring(0, 1) + sep + lastname)
-    result.push(firstname + sep + lastname.substring(0, 1))
+  separators.forEach(function(sep) {
+    result.push(firstname + sep + lastname);
+    result.push(lastname + sep + firstname);
+    result.push(firstInitial + sep + lastname);
+    result.push(firstname + sep + lastInitial);
+    alphabet.forEach(function(middle_char) {
+      result.push(firstname + sep + middle_char + sep + lastname);
+      result.push(firstInitial + sep + middle_char + sep + lastname);
+      result.push(firstname + sep + middle_char + sep + lastInitial);
+    });
   });
 
   return result;
