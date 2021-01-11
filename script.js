@@ -25,7 +25,7 @@ var handleGravatarResponse = function(profile) {
   }
 
   document.getElementById('preferredUsername').innerHTML = user.preferredUsername;
-  document.getElementById('gravitarImage').src = user.thumbnailUrl;
+  document.getElementById('gravatarImage').src = user.thumbnailUrl;
   // console.log(user);
   guessEmailAddress(user.hash, user.preferredUsername, firstname, lastname);
 };
@@ -160,11 +160,20 @@ var getBasicInfo = function(hash) {
   }
   var script = document.createElement('script');
   script.src = 'https://www.gravatar.com/' + hash + '.json?callback=handleGravatarResponse'
+  script.onerror = function() {
+    document.getElementById('gravatarImage').src = "https://secure.gravatar.com/avatar/" + hash;
+    toggleUserData(true);
+    alert("Failed to load details; it's likely no matching Gravatar account exists");
+  }
   document.head.appendChild(script);
 };
 
+var toggleUserData = function(bool) {
+  document.getElementById('userData').style.display = bool ? 'block' : 'none';
+};
+
 var checksTableReset = function() {
-  document.getElementById('userData').style.display = 'block';
+  toggleUserData(true);
   var checksTableBody = document.getElementById('checksTable').getElementsByTagName('tbody')[0];
   checksTableBody.innerHTML = '';
 };
@@ -213,6 +222,6 @@ window.addEventListener("load", function load(event){
     });
   }
 
-  document.getElementById('userData').style.display = 'none';
+  toggleUserData(false);
   toggleLoading(false, false);
 }, false);
