@@ -11,21 +11,33 @@ var handleGravatarResponse = function(profile) {
   var firstname = user.name.givenName;
   if (firstname) {
     document.getElementById('firstName').innerHTML = firstname;
+  } else if (document.getElementById('firstNameInput') && document.getElementById('firstNameInput').value) {
+    firstname = document.getElementById('firstNameInput').value;
   } else if (displayname_fragments.length === 2) {
     firstname = displayname_fragments[0];
     document.getElementById('firstName').innerHTML = firstname + " (not found; assumed from display name)";
   } else {
     document.getElementById('firstName').innerHTML = "not found";
+    var firstname_input = document.createElement('input');
+    firstname_input.id = 'firstNameInput';
+    firstname_input.placeholder = 'Custom First Name';
+    document.getElementById('firstName').appendChild(firstname_input);
   }
 
   var lastname = user.name.familyName;
   if (lastname) {
     document.getElementById('lastName').innerHTML = lastname;
+  } else if (document.getElementById('lastNameInput') && document.getElementById('lastNameInput').value) {
+    lastname = document.getElementById('lastNameInput').value;
   } else if (displayname_fragments.length === 2) {
     lastname = displayname_fragments[1];
     document.getElementById('lastName').innerHTML = lastname + " (not found; assumed from display name)";
   } else {
     document.getElementById('lastName').innerHTML = "not found";
+    var lastname_input = document.createElement('input');
+    lastname_input.id = 'lastNameInput';
+    lastname_input.placeholder = 'Custom Last Name';
+    document.getElementById('lastName').appendChild(lastname_input);
   }
 
   document.getElementById('preferredUsername').innerHTML = user.preferredUsername;
