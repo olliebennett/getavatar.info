@@ -6,22 +6,26 @@ var handleGravatarResponse = function(profile) {
   }
   document.getElementById('displayName').innerHTML = user.displayName;
 
-  var username_fragments = user.displayName.split(" ");
+  var displayname_fragments = user.displayName.split(" ");
 
   var firstname = user.name.givenName;
   if (firstname) {
     document.getElementById('firstName').innerHTML = firstname;
-  } else {
-    firstname = username_fragments[0];
+  } else if (displayname_fragments.length === 2) {
+    firstname = displayname_fragments[0];
     document.getElementById('firstName').innerHTML = firstname + " (not found; assumed from display name)";
+  } else {
+    document.getElementById('firstName').innerHTML = "not found";
   }
 
   var lastname = user.name.familyName;
   if (lastname) {
     document.getElementById('lastName').innerHTML = lastname;
-  } else {
-    lastname = username_fragments[1];
+  } else if (displayname_fragments.length === 2) {
+    lastname = displayname_fragments[1];
     document.getElementById('lastName').innerHTML = lastname + " (not found; assumed from display name)";
+  } else {
+    document.getElementById('lastName').innerHTML = "not found";
   }
 
   document.getElementById('preferredUsername').innerHTML = user.preferredUsername;
