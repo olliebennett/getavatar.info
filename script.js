@@ -45,9 +45,9 @@ var guessEmailAddress = function(hash, username, firstname, lastname) {
     mailboxes.push(lastname);
   }
 
-  mailboxes.concat(nameCombinations(firstname, lastname));
+  mailboxes = mailboxes.concat(nameCombinations(firstname, lastname));
 
-  mailboxes.concat(yearCombinations(mailboxes))
+  mailboxes = mailboxes.concat(yearCombinations(mailboxes))
 
   // De-duplicate...
   mailboxes = uniq(mailboxes);
@@ -84,6 +84,8 @@ var yearCombinations = function(nameList) {
       result.push(name + year);
     });
   });
+
+  return result;
 }
 
 // var containsYear = function(str) {
