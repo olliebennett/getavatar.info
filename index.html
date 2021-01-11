@@ -25,7 +25,6 @@
     <!-- <p>A Gravatar image URL can also be used as an input.</p> -->
 
     <form id="form">
-
       <div class="form-group">
         <label for="hash">Hash</label>
         <p class="help-block">
@@ -35,33 +34,39 @@
         <input id="hash" type="text" class="form-control">
       </div>
 
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" id="domains_basic" value="domains_basic" checked disabled>
-          Basic Checks at Popular Domains
-        </label>
+      <div id="userData">
+        <h3>User Data from Gravatar</h3>
+
+        <table class="table">
+          <tbody>
+            <tr>
+              <th>Image</th>
+              <td><img id="gravitarImage" src="#" /></td>
+            </tr>
+            <tr>
+              <th>Name</th>
+              <td id="displayName">-</td>
+            </tr>
+            <tr>
+              <th>Preferred Username</th>
+              <td id="preferredUsername">-</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" id="domains_advanced" value="domains_advanced" disabled>
-          Name Aliases
-        </label>
-      </div>
-
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" id="domains_advanced" value="domains_advanced" disabled>
-          Middle Name Initial
-        </label>
-      </div>
-
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" id="domains_advanced" value="domains_advanced" disabled>
-          Extended Domain List
-        </label>
-      </div>
+      <table class="table table-bordered table-striped" id="checksTable">
+        <thead>
+          <tr>
+            <th>Email Provider</th>
+            <th>Basic Names</th>
+            <th>Year Suffixes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="3">Click button to begin searching common email providers for matches...</td></tr>
+        </tbody>
+      </table>
 
       <div class="row">
         <div class="col-xs-6">
@@ -80,14 +85,6 @@
     <p class="alert alert-danger" id="no-match">
       No match found.
     </p>
-
-    <h3>Raw User Data from Gravatar</h3>
-
-    <ul>
-      <li>Name: <code id="displayName"></code></li>
-      <li>Preferred Username: <code id="preferredUsername"></code></li>
-      <li>Raw Data: <code id="userData"></code></li>
-    </ul>
 
     <!--
     <h1>Email Guesser Testing</h1>
@@ -118,8 +115,8 @@
 
     <div class="alert alert-info">
       <p>
-        <span>Created by <a href="http://olliebennett.co.uk/">Ollie Bennett</a>.</span>
-        <span class="pull-right">Raise issues or contribute via <a href="https://github.com/olliebennett/gravatar-decoder">GitHub</a> &rarr;</span>
+        <span>Created by <a href="https://www.olliebennett.co.uk/">Ollie Bennett</a></span>
+        <span class="pull-right">Raise issues or contribute on <a href="https://github.com/olliebennett/gravatar-decoder">GitHub</a></span>
       </p>
     </div>
 
