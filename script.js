@@ -5,9 +5,29 @@ var handleGravatarResponse = function(profile) {
     return;
   }
   document.getElementById('displayName').innerHTML = user.displayName;
+
+  var username_fragments = user.displayName.split(" ");
+
+  var firstname = user.name.givenName;
+  if (firstname) {
+    document.getElementById('firstName').innerHTML = firstname;
+  } else {
+    firstname = username_fragments[0];
+    document.getElementById('firstName').innerHTML = firstname + " (not found; assumed from display name)";
+  }
+
+  var lastname = user.name.familyName;
+  if (lastname) {
+    document.getElementById('lastName').innerHTML = lastname;
+  } else {
+    lastname = username_fragments[1];
+    document.getElementById('lastName').innerHTML = lastname + " (not found; assumed from display name)";
+  }
+
   document.getElementById('preferredUsername').innerHTML = user.preferredUsername;
   document.getElementById('gravitarImage').src = user.thumbnailUrl;
-  guessEmailAddress(user.hash, user.preferredUsername, user.name.givenName, user.name.familyName);
+  // console.log(user);
+  guessEmailAddress(user.hash, user.preferredUsername, firstname, lastname);
 };
 
 var guessEmailAddress = function(hash, username, firstname, lastname) {
