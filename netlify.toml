@@ -1,0 +1,20 @@
+[build.processing.html]
+  pretty_urls = true
+
+# Redirect default Netlify subdomain to primary domain
+[[redirects]]
+  from = "https://get-avatar.netlify.app/*"
+  to = "https://getavatar.info/:splat"
+  force = true
+
+# Redirect for Plausible Analytics script
+[[redirects]]
+  from = "/a/js/script.js"
+  to = "https://plausible.io/js/plausible.js"
+  status = 200
+
+# Redirect for Plausible Analytics API calls
+[[redirects]]
+  from = "/a/api/event"
+  to = "https://plausible.io/api/event"
+  status = 202
